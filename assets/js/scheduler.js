@@ -57,18 +57,20 @@ $(document).ready(function() {
         //here you should init the scheduler using dhtmlx
         scheduler.config.details_on_create = true;
         scheduler.config.details_on_dbclick = true;
-        scheduler.config.xml_date = "%Y-%m-%d %H:%i";
+        scheduler.config.xml_date = "%m/%d/%Y %H:%i";
 
         scheduler.config.lightbox.sections = [
-            { name: "Class", height: 75, type: "type_cls_ins" },
-            { name: "Details", height: 200, type: "textarea" },
-            { name: "Subscribers", height: 150, type: "type_subscribers" },
+            { name: "Class", height: 75, type: "type_cls_ins", map_to: "class" },
+            { name: "Details", height: 200, type: "textarea", map_to: "text" },
+            { name: "Subscribers", height: 150, type: "type_subscribers", map_to: "subscribers" },
             { name: "time", height: 72, type: "time", map_to: "auto" }
         ];
 
         scheduler.init("scheduler_here", new Date(), "month");
         scheduler.setLoadMode("month");
-        scheduler.load(data_url, "json");
+
+        console.log(data_from_url["data"]);
+        scheduler.parse(data_from_url["data"], "json");
 
         let dp = new dataProcessor("/event/api/"); //this api is used for any CRUD actions for backend
 
@@ -90,6 +92,16 @@ $(document).ready(function() {
                     }
                 });
             });
+
+            let event = scheduler.getEvent(id);
+            
+            if (event.class) {
+                $(".dhx_lightbox_class_select").val(event.class).trigger("change");
+            }
+
+            if (event.subscribers) {
+                $(".dhx_lightbox_sub_select").val(event.subscribers).trigger("change");
+            }
         });
     };
 
