@@ -1,0 +1,32 @@
+.dhx_cal_light_wide .dhx_wrap_section {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.custom-field.dhx_lightbox_class_select {
+    float: left;
+    margin-left: 10px;
+    width: 30%;
+}
+
+.dhx_cal_light_wide .dhx_cal_lsection.instructor {
+    width: calc(40% - 140px);
+}
+
+.dhx_cal_light_wide .dhx_cal_lsection.instructor label,
+.dhx_cal_light_wide .dhx_cal_lsection.instructor-label label {
+    cursor: default;
+}
+
+.dhx_cal_light_wide .dhx_cal_larea {
+    overflow-y: auto;
+}
+
+.select2-container {
+    margin-left: 10px;
+    width: calc(100% - 120px);
+}
+
+.select2-container-multi .select2-choices {
+    border-radius: 4px;
+}
