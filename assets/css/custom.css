@@ -24,9 +24,17 @@
 
 .select2-container {
     margin-left: 10px;
-    width: calc(100% - 120px);
+    width: calc(100% - 120px)!important;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border-color: #cecece;
 }
 
 .select2-container-multi .select2-choices {
     border-radius: 4px;
+}
+
+.select2-container--open .select2-dropdown--below {
+    left: -10px;
 }

@@ -24,15 +24,44 @@ $(document).ready(function() {
     var template_subscribers = function(sub_list) {
         let template = "";
 
-        template += "<select class=\"dhx_lightbox_sub_select custom-field\" aria-label=\"Subscribers\"  multiple=\"multiple\">";
+        template += "<select class=\"dhx_lightbox_sub_select custom-field\" aria-label=\"Subscribers\" name=\"subscribers[]\"  multiple=\"multiple\">";
 
         sub_list.forEach(function(sub_obj) {
-            template += "<option value=\"" + sub_obj["value"] + "\">" + sub_obj["label"] + "</option>";
+            template += "<option data-phone=\"" + sub_obj["phone"] + "\" value=\"" + sub_obj["value"] + "\">" + sub_obj["label"] + "</option>";
         });
 
         template += "</select>";
 
         return template;
+    };
+
+    var select2_events = function(classes, e) {
+        $(".dhx_lightbox_sub_select option[value=" + e.params.data.id + "]").prop("selected", false);
+        $(".dhx_lightbox_sub_select").trigger("change.select2");
+
+        let cur_cls_id = $(".dhx_lightbox_class_select").val();
+
+        classes.forEach(function(class_obj) {
+            if (class_obj["value"] == cur_cls_id) {
+                let subscription_ids = [];
+
+                class_obj["subscriptions"].forEach(function(subscription_obj) {
+                    subscription_ids.push(subscription_obj["id"]);
+                })
+
+                $.post(
+                    "/api.php", {
+                        "subscriberID": e.params.data.id,
+                        "subscriptions": JSON.stringify(subscription_ids)
+                    },
+                    function(data) {
+                        $(".dhx_lightbox_sub_select option[value=" + e.params.data.id + "]").prop("selected", JSON.parse(data));
+                        $(".dhx_lightbox_sub_select").trigger("change.select2");
+                    }
+                )
+            }
+        });
+
     };
 
     var scheduler_init = function(data_from_url) {
@@ -69,7 +98,6 @@ $(document).ready(function() {
         scheduler.init("scheduler_here", new Date(), "month");
         scheduler.setLoadMode("month");
 
-        console.log(data_from_url["data"]);
         scheduler.parse(data_from_url["data"], "json");
 
         let dp = new dataProcessor("/event/api/"); //this api is used for any CRUD actions for backend
@@ -78,8 +106,21 @@ $(document).ready(function() {
         dp.setTransactionMode("REST");
 
         scheduler.attachEvent("onLightbox", function(id) {
-            if (!$(".dhx_lightbox_sub_select").hasClass("select2-offscreen"))
-                $(".dhx_lightbox_sub_select").select2();
+            let select2Attrs = {
+                maximumSelectionLength: data_from_url["collections"]["classes"][0]["size"],
+                matcher: function(params, data) {
+                    if (params.term) {
+                    	if ( $(data.element).attr("data-phone").indexOf(params.term) == -1 && $(data.element).text().toLowerCase().indexOf(params.term.toLowerCase()) == -1)
+                    		return null;
+                    }
+
+                    return data;
+                }
+            };
+
+            if (!$(".dhx_lightbox_sub_select").hasClass("select2-hidden-accessible")) {
+                $(".dhx_lightbox_sub_select").select2(select2Attrs).on("select2:select", function(e) { select2_events(data_from_url["collections"]["classes"], e) });
+            }
 
             let cur_cls_id = $(".dhx_lightbox_class_select").val();
 
@@ -88,19 +129,26 @@ $(document).ready(function() {
 
                 data_from_url["collections"]["classes"].forEach(function(class_obj) {
                     if (class_obj["value"] == cur_cls_id) {
+                        select2Attrs["maximumSelectionLength"] = class_obj["size"];
+                        $(".dhx_lightbox_sub_select").select2(select2Attrs);
+
                         $(".dhx_cal_lsection.instructor-label label").text(class_obj["instructor"]["label"]);
                     }
                 });
             });
 
             let event = scheduler.getEvent(id);
-            
+
             if (event.class) {
                 $(".dhx_lightbox_class_select").val(event.class).trigger("change");
+            } else {
+                $(".dhx_lightbox_class_select").val(data_from_url["collections"]["classes"][0]["value"]).trigger("change");
             }
 
             if (event.subscribers) {
                 $(".dhx_lightbox_sub_select").val(event.subscribers).trigger("change");
+            } else {
+                $(".dhx_lightbox_sub_select").val([]).trigger("change");
             }
         });
     };
