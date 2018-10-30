@@ -50,7 +50,7 @@ $(document).ready(function() {
                 })
 
                 $.post(
-                    "/api.php", {
+                    "/event/api.php", {
                         "subscriberID": e.params.data.id,
                         "subscriptions": JSON.stringify(subscription_ids)
                     },
@@ -100,7 +100,7 @@ $(document).ready(function() {
 
         scheduler.parse(data_from_url["data"], "json");
 
-        let dp = new dataProcessor("/event/api/"); //this api is used for any CRUD actions for backend
+        let dp = new dataProcessor("/event/api.php"); //this api is used for any CRUD actions for backend
 
         dp.init(scheduler);
         dp.setTransactionMode("REST");
@@ -110,8 +110,8 @@ $(document).ready(function() {
                 maximumSelectionLength: data_from_url["collections"]["classes"][0]["size"],
                 matcher: function(params, data) {
                     if (params.term) {
-                    	if ( $(data.element).attr("data-phone").indexOf(params.term) == -1 && $(data.element).text().toLowerCase().indexOf(params.term.toLowerCase()) == -1)
-                    		return null;
+                        if ($(data.element).attr("data-phone").indexOf(params.term) == -1 && $(data.element).text().toLowerCase().indexOf(params.term.toLowerCase()) == -1)
+                            return null;
                     }
 
                     return data;
@@ -150,6 +150,16 @@ $(document).ready(function() {
             } else {
                 $(".dhx_lightbox_sub_select").val([]).trigger("change");
             }
+        });
+
+        scheduler.attachEvent("onEventSave", function(id, ev, is_new) {
+            if (!ev.class)
+                ev.class = $(".dhx_lightbox_class_select").val();
+
+            if (!ev.subscribers)
+                ev.subscribers = $(".dhx_lightbox_sub_select").val();
+
+            return true;
         });
     };
 
