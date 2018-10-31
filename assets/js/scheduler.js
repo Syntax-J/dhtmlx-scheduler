@@ -1,6 +1,26 @@
 $(document).ready(function() {
     var data_url = "/assets/data/JSON_feeder.json";
 
+    var change_value_to_key = function(list) {
+        let c_list = [];
+
+        for (let idx = 0; idx < list.length; idx++) {
+            let keys = Object.keys(list[idx]);
+            let tmp = list[idx];
+
+            for (let j = 0; j < keys.length; j++) {
+                if (keys[j] == "value") {
+                    tmp["key"] = list[idx][keys[j]];
+                    delete tmp["value"];
+                }
+            }
+
+            c_list.push(tmp);
+        }
+
+        return c_list;
+    }
+
     var template_class_instructor = function(class_list) {
         let template = "";
 
@@ -90,10 +110,30 @@ $(document).ready(function() {
 
         scheduler.config.lightbox.sections = [
             { name: "Class", height: 75, type: "type_cls_ins", map_to: "class" },
+            { name: "Instructor", height: 0, type: "select", map_to: "instructor", options: change_value_to_key(data_from_url["collections"]["instructors"]) },
             { name: "Details", height: 200, type: "textarea", map_to: "text" },
             { name: "Subscribers", height: 150, type: "type_subscribers", map_to: "subscribers" },
             { name: "time", height: 72, type: "time", map_to: "auto" }
         ];
+
+        scheduler.createTimelineView({
+            name: "timeline",
+            x_unit: "minute",
+            x_date: "%H:%i",
+            x_step: 30,
+            x_size: 48,
+            x_start: 16,
+            x_length: 48,
+            y_unit: change_value_to_key(data_from_url["collections"]["instructors"]),
+            y_property: "instructor",
+            render: "bar"
+        });
+
+        scheduler.createUnitsView({
+            name: "unit",
+            property: "instructor",
+            list: change_value_to_key(data_from_url["collections"]["instructors"])
+        });
 
         scheduler.init("scheduler_here", new Date(), "month");
         scheduler.setLoadMode("month");
@@ -155,11 +195,19 @@ $(document).ready(function() {
         });
 
         scheduler.attachEvent("onEventSave", function(id, ev, is_new) {
-            if (!ev.class)
+            if (!ev.class) {
                 ev.class = $(".dhx_lightbox_class_select").val();
 
-            if (!ev.subscribers)
-                ev.subscribers = $(".dhx_lightbox_sub_select").val();
+                data_from_url["collections"]["classes"].forEach(function(class_obj) {
+                    if (class_obj["value"] == ev.class) {
+                        ev.instructor = class_obj["instructor"]["value"];
+                    }
+                });
+            }
+
+            if (!ev.subscribers) {
+                ev.subscribers = $(".dhx_lightbox_sub_select").val() || [];
+            }
 
             return true;
         });

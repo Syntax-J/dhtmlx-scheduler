@@ -3,6 +3,10 @@
     padding-right: 15px;
 }
 
+.dhx_cal_light_wide .dhx_wrap_section:nth-child(2) {
+    display: none;
+}
+
 .custom-field.dhx_lightbox_class_select {
     float: left;
     margin-left: 10px;
