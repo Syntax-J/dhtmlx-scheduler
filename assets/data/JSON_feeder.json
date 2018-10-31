@@ -32,6 +32,16 @@
 				"subscriptions": [{"id":1, "name":"Fitness Cardio"}, {"id":2, "name":"KangooJumps"}]
 			}
 		],
+		"instructors": [
+			{
+				"label": "Operator demo",
+				"value": 5
+			},
+			{
+				"label": "Catalin Toader",
+				"value": 7
+			}
+		],
 		"subscribers": [
 			{
 				"label": "Bica Valentin14",

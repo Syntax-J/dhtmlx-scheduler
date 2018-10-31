@@ -141,8 +141,10 @@ $(document).ready(function() {
 
             if (event.class) {
                 $(".dhx_lightbox_class_select").val(event.class).trigger("change");
+                $(".dhx_lightbox_class_select").prop("disabled", true);
             } else {
                 $(".dhx_lightbox_class_select").val(data_from_url["collections"]["classes"][0]["value"]).trigger("change");
+                $(".dhx_lightbox_class_select").prop("disabled", false);
             }
 
             if (event.subscribers) {
