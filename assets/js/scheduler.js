@@ -84,10 +84,10 @@ $(document).ready(function() {
 
     };
 
-    var scheduler_init = function(data_from_url) {
+    var scheduler_init = function(collections) {
         scheduler.form_blocks["type_cls_ins"] = {
             render: function(sns) { // sns - section configuration object
-                return template_class_instructor(data_from_url["collections"]["classes"]);
+                return template_class_instructor(collections["classes"]);
             },
             set_value: function(node, value, ev) {},
             get_value: function(node, ev) {},
@@ -96,7 +96,7 @@ $(document).ready(function() {
 
         scheduler.form_blocks["type_subscribers"] = {
             render: function(sns) { // sns - section configuration object
-                return template_subscribers(data_from_url["collections"]["subscribers"]);
+                return template_subscribers(collections["subscribers"]);
             },
             set_value: function(node, value, ev) {},
             get_value: function(node, ev) {},
@@ -110,7 +110,7 @@ $(document).ready(function() {
 
         scheduler.config.lightbox.sections = [
             { name: "Class", height: 75, type: "type_cls_ins", map_to: "class" },
-            { name: "Instructor", height: 0, type: "select", map_to: "instructor", options: change_value_to_key(data_from_url["collections"]["instructors"]) },
+            { name: "Instructor", height: 0, type: "select", map_to: "instructor", options: change_value_to_key(collections["instructors"]) },
             { name: "Details", height: 200, type: "textarea", map_to: "text" },
             { name: "Subscribers", height: 150, type: "type_subscribers", map_to: "subscribers" },
             { name: "time", height: 72, type: "time", map_to: "auto" }
@@ -122,9 +122,9 @@ $(document).ready(function() {
             x_date: "%H:%i",
             x_step: 30,
             x_size: 48,
-            x_start: 16,
+            x_start: 0,
             x_length: 48,
-            y_unit: change_value_to_key(data_from_url["collections"]["instructors"]),
+            y_unit: change_value_to_key(collections["instructors"]),
             y_property: "instructor",
             render: "bar"
         });
@@ -132,22 +132,12 @@ $(document).ready(function() {
         scheduler.createUnitsView({
             name: "unit",
             property: "instructor",
-            list: change_value_to_key(data_from_url["collections"]["instructors"])
+            list: change_value_to_key(collections["instructors"])
         });
-
-        scheduler.init("scheduler_here", new Date(), "month");
-        scheduler.setLoadMode("month");
-
-        scheduler.parse(data_from_url["data"], "json");
-
-        let dp = new dataProcessor("/event/api.php"); //this api is used for any CRUD actions for backend
-
-        dp.init(scheduler);
-        dp.setTransactionMode("REST");
 
         scheduler.attachEvent("onLightbox", function(id) {
             let select2Attrs = {
-                maximumSelectionLength: data_from_url["collections"]["classes"][0]["size"],
+                maximumSelectionLength: collections["classes"][0]["size"],
                 matcher: function(params, data) {
                     if (params.term) {
                         if ($(data.element).attr("data-phone").indexOf(params.term) == -1 && $(data.element).text().toLowerCase().indexOf(params.term.toLowerCase()) == -1)
@@ -159,7 +149,7 @@ $(document).ready(function() {
             };
 
             if (!$(".dhx_lightbox_sub_select").hasClass("select2-hidden-accessible")) {
-                $(".dhx_lightbox_sub_select").select2(select2Attrs).on("select2:select", function(e) { select2_events(data_from_url["collections"]["classes"], e) });
+                $(".dhx_lightbox_sub_select").select2(select2Attrs).on("select2:select", function(e) { select2_events(collections["classes"], e) });
             }
 
             let cur_cls_id = $(".dhx_lightbox_class_select").val();
@@ -167,7 +157,7 @@ $(document).ready(function() {
             $(".dhx_lightbox_class_select").change(function(e) {
                 cur_cls_id = $(".dhx_lightbox_class_select").val();
 
-                data_from_url["collections"]["classes"].forEach(function(class_obj) {
+                collections["classes"].forEach(function(class_obj) {
                     if (class_obj["value"] == cur_cls_id) {
                         select2Attrs["maximumSelectionLength"] = class_obj["size"];
                         $(".dhx_lightbox_sub_select").select2(select2Attrs);
@@ -183,7 +173,7 @@ $(document).ready(function() {
                 $(".dhx_lightbox_class_select").val(event.class).trigger("change");
                 $(".dhx_lightbox_class_select").prop("disabled", true);
             } else {
-                $(".dhx_lightbox_class_select").val(data_from_url["collections"]["classes"][0]["value"]).trigger("change");
+                $(".dhx_lightbox_class_select").val(collections["classes"][0]["value"]).trigger("change");
                 $(".dhx_lightbox_class_select").prop("disabled", false);
             }
 
@@ -198,7 +188,7 @@ $(document).ready(function() {
             if (!ev.class) {
                 ev.class = $(".dhx_lightbox_class_select").val();
 
-                data_from_url["collections"]["classes"].forEach(function(class_obj) {
+                collections["classes"].forEach(function(class_obj) {
                     if (class_obj["value"] == ev.class) {
                         ev.instructor = class_obj["instructor"]["value"];
                     }
@@ -211,9 +201,33 @@ $(document).ready(function() {
 
             return true;
         });
+
+        scheduler.attachEvent("onBeforeViewChange", function(old_mode, old_date, mode, date) {
+            if (old_date && (old_date.getFullYear() != date.getFullYear() || old_date.getMonth() != date.getMonth())) {
+                $.get("/event/get_events.php", { "year": date.getFullYear(), "month": date.getMonth() + 1 }, function(event_list) {
+                    scheduler.parse(event_list, "json");
+                });
+            }
+
+            return true;
+        });
     };
 
-    $.getJSON(data_url, function(data_from_url) {
-        scheduler_init(data_from_url);
+    $.getJSON("/event/get_collections.php", function(collections) {
+        scheduler_init(collections);
+
+        $.get("/event/get_events.php", function(data) {
+
+            scheduler.init("scheduler_here", new Date(), "month");
+            scheduler.setLoadMode("month");
+
+            scheduler.parse(data, "json");
+
+            let dp = new dataProcessor("/event/api.php"); //this api is used for any CRUD actions for backend
+
+            dp.init(scheduler);
+            dp.setTransactionMode("REST");
+
+        });
     });
 });
