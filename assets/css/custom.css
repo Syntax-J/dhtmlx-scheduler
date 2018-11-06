@@ -1,44 +1,50 @@
 .dhx_cal_light_wide .dhx_wrap_section {
-    padding-left: 15px;
-    padding-right: 15px;
+	padding-left: 15px;
+	padding-right: 15px;
 }
 
-.dhx_cal_light_wide .dhx_wrap_section:nth-child(2) {
-    display: none;
+.dhx_cal_light_wide .dhx_wrap_section:nth-child(2),
+.dhx_cal_light_wide .dhx_wrap_section:nth-child(3) {
+	display: none;
 }
 
 .custom-field.dhx_lightbox_class_select {
-    float: left;
-    margin-left: 10px;
-    width: 30%;
+	float: left;
+	margin-left: 10px;
+	width: 30%;
 }
 
 .dhx_cal_light_wide .dhx_cal_lsection.instructor {
-    width: calc(40% - 140px);
+	width: calc(40% - 140px);
 }
 
 .dhx_cal_light_wide .dhx_cal_lsection.instructor label,
 .dhx_cal_light_wide .dhx_cal_lsection.instructor-label label {
-    cursor: default;
+	cursor: default;
 }
 
 .dhx_cal_light_wide .dhx_cal_larea {
-    overflow-y: auto;
+	overflow-y: auto;
 }
 
 .select2-container {
-    margin-left: 10px;
-    width: calc(100% - 120px)!important;
+	margin-left: 10px;
+	width: calc(100% - 120px)!important;
 }
 
 .select2-container--default.select2-container--focus .select2-selection--multiple {
-    border-color: #cecece;
+	border-color: #cecece;
 }
 
 .select2-container-multi .select2-choices {
-    border-radius: 4px;
+	border-radius: 4px;
 }
 
 .select2-container--open .select2-dropdown--below {
-    left: -10px;
+	left: -10px;
+}
+
+.select2-container .select2-selection{
+	height: 60px;
+	overflow-y: auto;
 }

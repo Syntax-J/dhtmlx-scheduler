@@ -12,7 +12,8 @@ $event_list = json_decode( '[
 		"subscribers": [
 			13
 		],
-		"text": "New event"
+		"text": "New event",
+		"readOnly": true
 	},
 	{
 		"class": 3,

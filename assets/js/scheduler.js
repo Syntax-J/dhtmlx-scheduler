@@ -36,6 +36,8 @@ $(document).ready(function() {
 
         template += "<div class=\"dhx_cal_lsection instructor-label\"><label>" + class_list[0]["instructor"]["label"] + "</label></div>";
 
+        template += "<div class=\"dhx_cal_lsection subscribers-count-label\"><label><span>0</span> / <span>" + class_list[0]["size"] + "</span></label></div>";
+
         template += "</select>";
 
         return template;
@@ -113,6 +115,7 @@ $(document).ready(function() {
         scheduler.config.lightbox.sections = [
             { name: "Class", height: 75, type: "type_cls_ins", map_to: "class" },
             { name: "Instructor", height: 0, type: "select", map_to: "instructor", options: change_value_to_key(collections["instructors"]) },
+            { name: "readOnly", height: 0, type: "select", map_to: "readOnly", options: [{ key: false, label: "False" }, { key: true, label: "True" }] },
             { name: "Details", height: 200, type: "textarea", map_to: "text" },
             { name: "Subscribers", height: 150, type: "type_subscribers", map_to: "subscribers" },
             { name: "time", height: 72, type: "time", map_to: "auto" }
@@ -151,7 +154,12 @@ $(document).ready(function() {
             };
 
             if (!$(".dhx_lightbox_sub_select").hasClass("select2-hidden-accessible")) {
-                $(".dhx_lightbox_sub_select").select2(select2Attrs).on("select2:select", function(e) { select2_events(collections["classes"], e) });
+                $(".dhx_lightbox_sub_select").select2(select2Attrs)
+                    .on("select2:select", function(e) { select2_events(collections["classes"], e) })
+                    .on("change", function(e) {
+                        if ($(this).val())
+                            $(".dhx_cal_lsection.subscribers-count-label label span:first-child").text($(this).val().length);
+                    });
             }
 
             let cur_cls_id = $(".dhx_lightbox_class_select").val();
@@ -166,6 +174,8 @@ $(document).ready(function() {
                         $(".dhx_lightbox_sub_select").select2(select2Attrs);
 
                         $(".dhx_cal_lsection.instructor-label label").text(class_obj["instructor"]["label"]);
+                        $(".dhx_cal_lsection.subscribers-count-label label span:first-child").text(0);
+                        $(".dhx_cal_lsection.subscribers-count-label label span:last-child").text(class_obj["size"]);
                     }
                 });
             });
@@ -179,6 +189,11 @@ $(document).ready(function() {
                 $(".dhx_lightbox_class_select").val(collections["classes"][0]["value"]).trigger("change");
                 $(".dhx_lightbox_class_select").prop("disabled", false);
             }
+
+            if (event.readOnly == true || event.readOnly == "true")
+                $(".dhx_lightbox_sub_select").prop("disabled", true);
+            else
+                $(".dhx_lightbox_sub_select").prop("disabled", false);
 
             if (event.subscribers) {
                 $(".dhx_lightbox_sub_select").val(event.subscribers).trigger("change");
@@ -201,6 +216,8 @@ $(document).ready(function() {
             if (!ev.subscribers) {
                 ev.subscribers = $(".dhx_lightbox_sub_select").val() || [];
             }
+
+            ev.readOnly = ev.subscribers ? true : false;
 
             return true;
         });
