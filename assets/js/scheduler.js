@@ -75,8 +75,10 @@ $(document).ready(function() {
                         "subscriptions": JSON.stringify(subscription_ids)
                     },
                     function(data) {
-                        $(".dhx_lightbox_sub_select option[value=" + e.params.data.id + "]").prop("selected", JSON.parse(data));
-                        $(".dhx_lightbox_sub_select").trigger("change.select2");
+                        if (JSON.parse(data)) {
+                            $(".dhx_lightbox_sub_select option[value=" + e.params.data.id + "]").prop("selected", JSON.parse(data));
+                            $(".dhx_lightbox_sub_select").trigger("change.select2");
+                        } else { alert("false"); }
                     }
                 )
             }
@@ -155,6 +157,7 @@ $(document).ready(function() {
             let cur_cls_id = $(".dhx_lightbox_class_select").val();
 
             $(".dhx_lightbox_class_select").change(function(e) {
+                $(".dhx_lightbox_sub_select").val([]).trigger("change");
                 cur_cls_id = $(".dhx_lightbox_class_select").val();
 
                 collections["classes"].forEach(function(class_obj) {
