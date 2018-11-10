@@ -1,2 +1,2 @@
 <?php
-echo json_encode(false);
+echo json_encode(true);

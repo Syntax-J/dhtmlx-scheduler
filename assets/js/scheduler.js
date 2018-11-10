@@ -79,7 +79,15 @@ $(document).ready(function() {
             return template;
         },
         set_value: function(node, value, ev) {
-            $(node).val(value ? value : [])
+            if (value) {
+                if (value instanceof Array)
+                    $(node).val(value);
+                else
+                    $(node).val(value.split(","));
+
+            } else {
+                $(node).val([]);
+            }
 
             var select2Attrs = {
                 maximumSelectionLength: scheduler.serverList("classes")[0]["size"],
@@ -148,7 +156,7 @@ $(document).ready(function() {
             $(node).trigger("change");
         },
         get_value: function(node, ev) {
-            return $(node).val();
+            return $(node).val().join(",");
         },
         focus: function(node) {}
     };
@@ -186,13 +194,13 @@ $(document).ready(function() {
         list: scheduler.serverList("instructors"),
     });
 
-    scheduler.attachEvent("onBeforeViewChange", function(old_mode, old_date, mode, date) {
+    /*scheduler.attachEvent("onBeforeViewChange", function(old_mode, old_date, mode, date) {
         if (old_date && (old_date.getFullYear() != date.getFullYear() || old_date.getMonth() != date.getMonth())) {
             scheduler.load("/event/get_events.php?year=" + date.getFullYear() + "&month=" + (date.getMonth() + 1), "json");
         }
 
         return true;
-    });
+    });*/
 
 
     scheduler.init("scheduler_here", new Date(), "month");
