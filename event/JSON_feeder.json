@@ -1,0 +1,398 @@
+{
+    "collections":
+    {
+        "classes": [
+        {
+            "instructor":
+            {
+                "label": "Operator demo",
+                "value": 5
+            },
+            "label": "Test2",
+            "size": 4,
+            "subscriptions": [
+            {
+                "id": 1,
+                "name": "Fitness Cardio"
+            },
+            {
+                "id": 2,
+                "name": "KangooJumps"
+            }],
+            "value": 2
+        },
+        {
+            "instructor":
+            {
+                "label": "Catalin Toader",
+                "value": 7
+            },
+            "label": "Test1",
+            "size": 2,
+            "subscriptions": [
+            {
+                "id": 1,
+                "name": "Fitness Cardio"
+            },
+            {
+                "id": 2,
+                "name": "KangooJumps"
+            }],
+            "value": 1
+        },
+        {
+            "instructor":
+            {
+                "label": "Operator demo",
+                "value": 5
+            },
+            "label": "Test3",
+            "size": 7,
+            "subscriptions": [
+            {
+                "id": 1,
+                "name": "Fitness Cardio"
+            },
+            {
+                "id": 2,
+                "name": "KangooJumps"
+            }],
+            "value": 3
+        },
+        {
+            "instructor":
+            {
+                "label": "Operator demo",
+                "value": 5
+            },
+            "label": "Test4",
+            "size": 15,
+            "subscriptions": [
+            {
+                "id": 1,
+                "name": "Fitness Cardio"
+            },
+            {
+                "id": 2,
+                "name": "KangooJumps"
+            }],
+            "value": 4
+        }],
+        "instructors": [
+        {
+            "label": "Operator demo",
+            "value": 5
+        },
+        {
+            "label": "Catalin Toader",
+            "value": 7
+        }],
+        "subscribers": [
+        {
+            "label": "Bica Valentin14",
+            "phone": "1234581384",
+            "value": 23
+        },
+        {
+            "label": "Alina Mihai10",
+            "phone": "8231236842",
+            "value": 19
+        },
+        {
+            "label": "Popescu Catalin11",
+            "phone": "8135961325",
+            "value": 20
+        },
+        {
+            "label": "Alina Mihai",
+            "phone": "9238181383",
+            "value": 5
+        },
+        {
+            "label": "Bica Valentin9",
+            "phone": "3568582868",
+            "value": 9
+        },
+        {
+            "label": "Popescu Catalin11",
+            "phone": "7523828354",
+            "value": 11
+        },
+        {
+            "label": "Alina Mihai10",
+            "phone": "8246238454",
+            "value": 10
+        },
+        {
+            "label": "Popa Cristina13",
+            "phone": "6642858359",
+            "value": 13
+        },
+        {
+            "label": "Popa Cristina8",
+            "phone": "2341883200",
+            "value": 8
+        },
+        {
+            "label": "Ioana Valentina7",
+            "phone": "1597535846",
+            "value": 16
+        },
+        {
+            "label": "Bica Valentin14",
+            "phone": "8361548386",
+            "value": 14
+        },
+        {
+            "label": "Alina Mihai15",
+            "phone": "3660522489",
+            "value": 24
+        },
+        {
+            "label": "Alina Mihai15",
+            "phone": "2358624486",
+            "value": 15
+        },
+        {
+            "label": "Popescu Catalin",
+            "phone": "3344522185",
+            "value": 1
+        },
+        {
+            "label": "Ioana Valentina",
+            "phone": "3682211154",
+            "value": 2
+        },
+        {
+            "label": "Bica Valentin",
+            "phone": "5577885542",
+            "value": 4
+        },
+        {
+            "label": "Bica Valentin9",
+            "phone": "9966842584",
+            "value": 18
+        },
+        {
+            "label": "Ioana Valentina12",
+            "phone": "1234581384",
+            "value": 21
+        },
+        {
+            "label": "Popa Cristina8",
+            "phone": "1234581384",
+            "value": 17
+        },
+        {
+            "label": "Popa Cristina13",
+            "phone": "1234581384",
+            "value": 22
+        },
+        {
+            "label": "Popescu Catalin6",
+            "phone": "1234581384",
+            "value": 6
+        },
+        {
+            "label": "Popa Cristina",
+            "phone": "1234581384",
+            "value": 3
+        },
+        {
+            "label": "Ioana Valentina7",
+            "phone": "1234581384",
+            "value": 7
+        },
+        {
+            "label": "Ioana Valentina12",
+            "phone": "1234581384",
+            "value": 12
+        }]
+    },
+    "data": [
+    {
+        "class": 1,
+        "color": "#ff0000",
+        "end_date": "10/26/2018 05:50",
+        "id": 1,
+        "instructor": 7,
+        "size": 4,
+        "start_date": "10/26/2018 01:30",
+        "subscribers": [
+            13
+        ],
+        "text": "New event"
+    },
+    {
+        "class": 3,
+        "color": "#ffff00",
+        "end_date": "07/27/2018 05:20",
+        "id": 2,
+        "instructor": 5,
+        "size": 2,
+        "start_date": "07/27/2018 04:00",
+        "subscribers": [],
+        "text": "toa"
+    },
+    {
+        "class": 1,
+        "color": "#ff0000",
+        "end_date": "07/18/2018 00:35",
+        "id": 3,
+        "instructor": 7,
+        "size": 4,
+        "start_date": "07/18/2018 00:30",
+        "subscribers": [],
+        "text": "New event"
+    },
+    {
+        "class": 3,
+        "color": "#ffff00",
+        "end_date": "07/05/2018 00:05",
+        "id": 4,
+        "instructor": 5,
+        "size": 2,
+        "start_date": "07/05/2018 00:00",
+        "subscribers": [
+            3,
+            20
+        ],
+        "text": "cata"
+    },
+    {
+        "class": 1,
+        "color": "#ff0000",
+        "end_date": "07/03/2018 00:05",
+        "id": 5,
+        "instructor": 7,
+        "size": 4,
+        "start_date": "07/03/2018 00:00",
+        "subscribers": [
+            13,
+            22
+        ],
+        "text": "aaaaa"
+    },
+    {
+        "class": 3,
+        "color": "#dbdb33",
+        "end_date": "11/07/2018 00:05",
+        "id": 125,
+        "instructor": 7,
+        "size": 2,
+        "start_date": "11/07/2018 00:00",
+        "subscribers": [],
+        "text": "Eveniment nou"
+    },
+    {
+        "class": 4,
+        "color": "#00ff00",
+        "end_date": "11/07/2018 00:05",
+        "id": 126,
+        "instructor": 5,
+        "size": 50,
+        "start_date": "11/07/2018 00:00",
+        "subscribers": [],
+        "text": "Eveniment nou"
+    },
+    {
+        "class": 3,
+        "color": "#dbdb33",
+        "end_date": "11/07/2018 00:05",
+        "id": 127,
+        "instructor": 7,
+        "size": 2,
+        "start_date": "11/07/2018 00:00",
+        "subscribers": [
+            3,
+            16
+        ],
+        "text": "Eveniment nou"
+    },
+    {
+        "class": 2,
+        "color": "#0000ff",
+        "end_date": "11/08/2018 00:05",
+        "id": 128,
+        "instructor": 5,
+        "size": 3,
+        "start_date": "11/08/2018 00:00",
+        "subscribers": [
+            14,
+            21
+        ],
+        "text": "Eveniment nou"
+    },
+    {
+        "class": 3,
+        "color": "#dbdb33",
+        "end_date": "11/08/2018 00:05",
+        "id": 129,
+        "instructor": 7,
+        "size": 2,
+        "start_date": "11/08/2018 00:00",
+        "subscribers": [
+            21,
+            24
+        ],
+        "text": "Eveniment nou"
+    },
+    {
+        "class": 3,
+        "color": "#dbdb33",
+        "end_date": "11/08/2018 00:05",
+        "id": 130,
+        "instructor": 7,
+        "size": 2,
+        "start_date": "11/08/2018 00:00",
+        "subscribers": [
+            17,
+            9
+        ],
+        "text": "Eveniment nou1"
+    },
+    {
+        "class": 1,
+        "color": "#ff0000",
+        "end_date": "11/08/2018 00:05",
+        "id": 131,
+        "instructor": 5,
+        "size": 40,
+        "start_date": "11/08/2018 00:00",
+        "subscribers": [
+            17,
+            5
+        ],
+        "text": "Eveniment nou"
+    },
+    {
+        "class": 4,
+        "color": "#00ff00",
+        "end_date": "11/08/2018 00:05",
+        "id": 132,
+        "instructor": 5,
+        "size": 50,
+        "start_date": "11/08/2018 00:00",
+        "subscribers": [
+            13,
+            19,
+            16,
+            24
+        ],
+        "text": "Eveniment nou"
+    },
+    {
+        "class": 4,
+        "color": "#00ff00",
+        "end_date": "11/01/2018 00:05",
+        "id": 133,
+        "instructor": 5,
+        "size": 50,
+        "start_date": "11/01/2018 00:00",
+        "subscribers": [
+            13,
+            20
+        ],
+        "text": "Eveniment nou"
+    }]
+}
