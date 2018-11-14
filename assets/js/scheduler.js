@@ -119,44 +119,57 @@ $(document).ready(function() {
 
 				$(node)
 				.on("select2:select", function(e) {
-					scheduler.serverList("classes").forEach(function(class_obj) {
-						if (class_obj["key"] == scheduler.formSection("classid").getValue()) {
-							var subscription_ids = [];
+					$.get(
+						"/event/api.php", {
+							"subscriberID": e.params.data.id,
+							"classID": scheduler.formSection("classid").getValue()
+						},
+						function(data) {//can we prevent the eselect2 event? => https://select2.org/programmatic-control/events
+							node.childNodes.forEach(function(c_node) {//why iterate? performance affected
+								if (c_node.value == e.params.data.id) {
+									$(c_node).prop("selected", JSON.parse(data));
 
-							class_obj["subscriptions"].forEach(function(subscription_obj) {
-								subscription_ids.push(subscription_obj["id"]);
-							})
-
-							$.post(
-								"/event/api.php", {
-									"subscriberID": e.params.data.id,
-									"subscriptions": JSON.stringify(subscription_ids)
-								},
-								function(data) {
-									node.childNodes.forEach(function(c_node) {
-										if (c_node.value == e.params.data.id) {
-											$(c_node).prop("selected", JSON.parse(data));
-
-											return true;
-										}
-									});
-
-									$(node).trigger("change.select2");
+									return true;
 								}
-							)
+							});
+							if(JSON.parse(data)){
+								dhtmlx.alert(e.params.data.text + " Added!")
+							}else  dhtmlx.alert(e.params.data.text + " does not have valid subscription!")
 
+							$(node).trigger("change.select2");
 						}
-					});
+					)
 				})
+				/*.on("select2:unselect", function(e) { //this was added by me like a separate functionality, is the same like select2:select
+
+					var event_id = scheduler.getState().lightbox_id
+					$.get("/event/ischeckin", {
+						"subscriberID": e.params.data.id,
+						"eventid": event_id
+					}, function(data) {//can we prevent the eselect2 event?
+						node.childNodes.forEach(function(c_node) {
+							if (c_node.value == e.params.data.id) {
+								$(c_node).prop("selected", JSON.parse(data));
+
+								return true;
+							}
+						});
+						if(JSON.parse(data)){
+							dhtmlx.alert(e.params.data.text + " subscriber is in the class!")
+						}else  dhtmlx.alert(e.params.data.text + " deleted!")
+
+						$(node).trigger("change.select2");
+					})
+				})*/
 				.on("change", function() {
-					if ($(node).val())
+					if ($(node).val())//why do we need chnage event if we have sesect and unselect defined?
 						scheduler.formSection("classid").node.parentNode.lastChild.firstChild.firstChild.innerHTML = $(node).val().length;
 					else
 						scheduler.formSection("classid").node.parentNode.lastChild.firstChild.firstChild.innerHTML = 0;
 				});
 			};
 
-			$(node).trigger("change");
+			$(node).trigger("change");//why do you trigger again change event?
 		},
 		get_value: function(node, ev) {
 			return $(node).val().join(",");
